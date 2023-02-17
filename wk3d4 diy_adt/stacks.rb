@@ -42,24 +42,27 @@ end
 class Map
 
     def initialize
-
+      @map = Array.new
     end
 
     def set(key, val)
-
+      @map << [key, val]
     end
 
     def get(key)
-
+      @map.each do |el|
+       return el if el[0] == key
+      end
     end
 
     def delete(key)
-
+      (0...@map.length).each do |i|
+       @map.delete_at(i) if @map[i][0] == key
+      end
     end
 
     def show
-
-
+      
     end
 
 end
