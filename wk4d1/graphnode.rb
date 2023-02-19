@@ -85,4 +85,19 @@ graph = {
   'm': []
 }
 
-depth_first(graph)
+# depth_first(graph)
+
+def bfs(starting_node, target_value, visited = Set.new)
+    return nil if visited.include?(starting_node.value)
+
+    visited.add(starting_node.value)
+    starting_node.neighbors.each do |el|
+        if el.value == target_value
+            return el
+        else 
+            bfs(el, target_value)
+        end
+    end
+end
+
+p bfs(a, "f")
