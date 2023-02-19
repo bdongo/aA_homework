@@ -1,41 +1,66 @@
 class Stack
+
   def initialize
     # create ivar to store stack here!
-    @stack = []
+    @store = []
   end
 
-  def push(el)
+  def push(value)
     # adds an element to the stack
-    @stack << el
+    store << value
+    self #stack instance and will block any other enumerables after array returns by default
   end
 
   def pop
     # removes one element from the stack
-    @stack.pop
+    store.pop
   end
 
   def peek
     # returns, but doesn't remove, the top element in the stack
-    @stack[0]
+    store.last
   end
+
+  def size
+    store.length
+  end
+
+  def empty?
+    store.empty?
+  end
+
+  def inspect
+    "<#Stack:#{stack.obj_id}>"
+  end
+
+  private 
+  attr_reader :store
+
 end
 
-class Queue
+class MyQueue
     def initialize
-        @queue = []
+        @inner = []
     end
 
     def enqueue(el)
-        @queue << el
+      inner.unshift(el)
     end
 
     def dequeue
-        @queue.shift
+      inner.pop
     end
 
-    def peak
-        @queue[0]
+    def show
+      return inner.dup #doesnt support inner arrays
     end
+
+    def empty?
+      inner.empty?
+    end
+
+    private
+    attr_reader ::inner
 
 end
 
@@ -66,3 +91,46 @@ class Map
     end
 
 end
+
+class Node
+
+  attr_reader :value, :children
+
+  def initialize(value, children = [])
+    @value = value
+    @children = children
+  end
+
+
+  def dfs(target = nil, &prc)
+    prc ||= Proc.new { |node| node.value == value }
+    return self if prc.call(self)
+
+    #self.children.each
+    children.each do |child|
+      result = child.dfs(target, &prc)
+      return result unless result.nil?
+    end
+
+  end
+  
+  def bfs(target = nil, &prc)
+    prc ||= Proc.new { |node| node.value == value }
+
+    nodes_q = [self]
+    until nodes_q.empty?
+      node = nodes_q.shift
+      return node if prc.call(node)
+      nodes_q.concat(node.children)
+    end
+    
+    nil
+end
+
+d = Node.new("d")
+e = Node.new("e")
+f = Node.new("f")
+g = Node.new("g")
+b = Node.new("b", [d, e])
+c = Node.new("c", [f, g])
+a = Node.new("a", [b, c])
