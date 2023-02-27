@@ -14,8 +14,7 @@
         #  check size
         # check if item already exists
         if store.include?(el)
-            idx = store.index(el)
-            store.delete_at(idx)
+            store.delete(el)
             store << el
             return
         end
@@ -26,7 +25,6 @@
             store.shift
             store << el
         end
-
     end
 
     def show
